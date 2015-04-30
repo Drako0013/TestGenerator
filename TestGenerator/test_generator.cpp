@@ -16,40 +16,41 @@ TestGenerator::~TestGenerator()
 {
 }
 
-void TestGenerator::GenerateTest(std::string dir, int width, int height, int speed)
-{
-
-	int f, i, j, sqx = 20, sqy = 20, sqs = 50;
-
+void TestGenerator::GenerateTest(std::string dir, int width, int height, int shapesNo, int frames){
+	std::cout << "Saving video " << dir << std::endl;
 	VideoFactory vf(dir, width, height, 24);
 
 	cv::Mat v(height, width, CV_8U);
 
-	for (i = 0; i < height; i++) {
-		for (j = 0; j < width; j++) {
-			v.at<uchar>(i, j) = 0;
-		}
+	shapes.clear();
+	for(int i = 0; i < shapesNo; i++){
+		int color = 255 * (int)( (float)(i + 1) / (float)(shapesNo + 1));
+		std::cout << "Color: " << color << std::endl;
+		Shape s(0, color, 100, 100, i, i * 2, 2 * (i + 1) );
+		shapes.push_back( s );
 	}
 
-	for (i = sqx; i < sqx + sqs; i++) {
-		for (j = sqy; j < sqy + sqs; j++) {
-			v.at<uchar>(i, j) = 255;
-		}
-	}
-
-	for (f = 0; f < 24 * 3; f++) {
-		std::cout << "Processing frame " << (f + 1) << ".\n";
-		for (i = sqx; i < sqx + sqs; i++) {
-			for (j = sqy; j < sqy + speed; j++) {
-				if (j < width) {
-					v.at<uchar>(i, j) = 0;
-				}
-				if (j + sqs < width) {
-					v.at<uchar>(i, j + sqs) = 255;
-				}
+	while(frames--){
+		std::cout << "Processing frame " << frames << std::endl;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				v.at<uchar>(i, j) = 0;
 			}
 		}
-		sqy += speed;
+		this->Draw(v);
+		this->Update();
 		vf.AddFrame(v);
+	}
+}
+
+void TestGenerator::Draw(cv::Mat &mat){
+	for(int i = 0; i < this->shapes.size(); i++){
+		this->shapes[i].Draw(mat);
+	}
+}
+
+void TestGenerator::Update(){
+	for(int i = 0; i < this->shapes.size(); i++){
+		this->shapes[i].Update();
 	}
 }

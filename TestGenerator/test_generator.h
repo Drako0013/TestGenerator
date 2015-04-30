@@ -11,8 +11,9 @@ class TestGenerator
 public:
 	TestGenerator();
 	~TestGenerator();
-	static void GenerateTest(std::string dir, int width, int height, int speed);
+	void GenerateTest(std::string dir, int width, int height, int shapesNo, int frames);
 	void Draw(cv::Mat &mat);
+	void Update();
 
 private:
 	std::string fileName;

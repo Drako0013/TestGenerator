@@ -1,3 +1,6 @@
+#ifndef SHAPE_H_
+#define SHAPE_H_
+
 #include <cstdlib>
 #include <ctime>
 
@@ -5,8 +8,8 @@
 
 class Shape{
 public:
-	Shape( int type, int color );
-	~Shape();
+	Shape( int type, int color, int posX, int posY, int velX, int velY, int size );
+	//~Shape();
 	void Draw(cv::Mat &mat);
 	void Update();
 
@@ -20,3 +23,5 @@ private:
 	int velY;
 
 };
+
+#endif
