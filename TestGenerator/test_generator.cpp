@@ -24,7 +24,7 @@ void TestGenerator::GenerateTest(std::string dir, int width, int height, int sha
 
 	shapes.clear();
 	for(int i = 0; i < shapesNo; i++){
-		int color = 255 * (int)( (float)(i + 1) / (float)(shapesNo + 1));
+		int color = 255 * (i + 1) / (shapesNo + 1);
 		std::cout << "Color: " << color << std::endl;
 		Shape s(0, color, 100, 100, i, i * 2, 2 * (i + 1) );
 		shapes.push_back( s );
