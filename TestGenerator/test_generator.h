@@ -9,17 +9,18 @@
 class TestGenerator
 {
 public:
-	TestGenerator();
+	TestGenerator(std::string dir, int width, int height, int fps);
 	~TestGenerator();
-	void GenerateTest(std::string dir, int width, int height, int shapesNo, int frames);
+	void GenerateTest(int shapesNo, int frames);
 	void Draw(cv::Mat &mat);
 	void Update();
+	void saveFile(int frame);
 
 private:
 	std::string fileName;
 	int width;
 	int height;
-	int speed;
+	int fps;
 	std::vector<Shape> shapes;
 
 };

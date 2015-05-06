@@ -18,8 +18,20 @@ void Shape::Update(){
 void Shape::Draw(cv::Mat &mat){
 	for(int i = 0; i < this->size; i++){
 		for(int j = 0; j < this->size; j++){
-			mat.at<uchar>(i + this->posY, j + this->posY) = this->color;
+			mat.at<uchar>(i + this->posY, j + this->posX) = this->color;
 		}
 	}
 }
 
+
+void Shape::addToFile( std::vector< std::vector< std::pair<float, float> > > &data){
+	for(int i = 0; i < this->size; i++){
+		for(int j = 0; j < this->size; j++){
+			int y = i + this->posY;
+			int x = j + this->posX;
+			if( y >= 0 && y < data.size() && x >= 0 && x < data[0].size() ){
+				data[y][x] = std::make_pair((float)this->velY, (float)this->velX);
+			}
+		}
+	}
+}

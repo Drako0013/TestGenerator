@@ -7,20 +7,22 @@
 #include <cstdio>
 #include <iostream>
 
-TestGenerator::TestGenerator()
-{
+TestGenerator::TestGenerator(std::string dir, int width, int height, int fps){
+	this->fileName = dir;
+	this->width = width;
+	this->height = height;
+	this->fps = fps;
 }
 
 
-TestGenerator::~TestGenerator()
-{
+TestGenerator::~TestGenerator(){
 }
 
-void TestGenerator::GenerateTest(std::string dir, int width, int height, int shapesNo, int frames){
-	std::cout << "Saving video " << dir << std::endl;
-	VideoFactory vf(dir, width, height, 24);
+void TestGenerator::GenerateTest(int shapesNo, int frames){
+	std::cout << "Saving video " << this->fileName << std::endl;
+	VideoFactory vf(this->fileName, this->width, this->height, this->fps);
 
-	cv::Mat v(height, width, CV_8U);
+	cv::Mat v(this->height, this->width, CV_8U);
 
 	shapes.clear();
 	for(int i = 0; i < shapesNo; i++){
@@ -30,16 +32,19 @@ void TestGenerator::GenerateTest(std::string dir, int width, int height, int sha
 		shapes.push_back( s );
 	}
 
+	int f = 0;
 	while(frames--){
 		std::cout << "Processing frame " << frames << std::endl;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < this->height; i++) {
+			for (int j = 0; j < this->width; j++) {
 				v.at<uchar>(i, j) = 0;
 			}
 		}
 		this->Draw(v);
 		this->Update();
 		vf.AddFrame(v);
+		this->saveFile(f);
+		f++;
 	}
 }
 
@@ -53,4 +58,29 @@ void TestGenerator::Update(){
 	for(int i = 0; i < this->shapes.size(); i++){
 		this->shapes[i].Update();
 	}
+}
+
+void TestGenerator::saveFile(int frame){
+	std::string fileName = this->fileName + "_" + std::to_string(frame) + ".txt";
+	FILE *out = fopen( fileName.c_str(), "w" );
+	//version 1: just demonstrative
+	//Not working for other shapes
+	std::vector< std::vector< std::pair<float, float> > > frameFlowData( this->height );
+	for(int i = 0; i < this->height; i++){
+		for(int j = 0; j < this->width; j++){
+			frameFlowData[i].push_back( std::make_pair(0.0, 0.0) );
+		}
+	}
+
+	for(int i = 0; i < this->shapes.size(); i++){
+		shapes[i].addToFile( frameFlowData );
+	}
+
+	for(int i = 0; i < this->height; i++){
+		for(int j = 0; j < this->width; j++){
+			fprintf(out, "(%.2f,%.2f)", frameFlowData[i][j].first, frameFlowData[i][j].second);
+		}
+		fprintf(out, "\n");
+	}
+
 }

@@ -12,6 +12,7 @@ public:
 	//~Shape();
 	void Draw(cv::Mat &mat);
 	void Update();
+	void addToFile(std::vector< std::vector< std::pair<float, float> > > &data);
 
 private:
 	int type;
