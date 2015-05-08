@@ -11,6 +11,7 @@ public:
 	Shape( int type, int color, int posX, int posY, int velX, int velY, int size );
 	//~Shape();
 	void Draw(cv::Mat &mat);
+	void DrawBorder(cv::Mat &mat, int size);
 	void Update();
 	void addToFile(std::vector< std::vector< std::pair<float, float> > > &data);
 

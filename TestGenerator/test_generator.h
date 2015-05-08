@@ -13,6 +13,7 @@ public:
 	~TestGenerator();
 	void GenerateTest(int shapesNo, int frames);
 	void Draw(cv::Mat &mat);
+	void DrawBorder(cv::Mat &mat, int size);
 	void Update();
 	void saveFile(int frame);
 

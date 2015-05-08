@@ -1,5 +1,7 @@
 #include "shape.h"
 
+#define WHITE 0xff;
+
 Shape::Shape(int type, int color, int posX, int posY, int velX, int velY, int size){
 	this->type = type;
 	this->color = color;
@@ -19,6 +21,16 @@ void Shape::Draw(cv::Mat &mat){
 	for(int i = 0; i < this->size; i++){
 		for(int j = 0; j < this->size; j++){
 			mat.at<uchar>(i + this->posY, j + this->posX) = this->color;
+		}
+	}
+}
+
+void Shape::DrawBorder(cv::Mat &mat, int bsize){
+	for (int i = -bsize; i < this->size + bsize; i++){
+		for (int j = -bsize; j < this->size + bsize; j++){
+			if (i < bsize || i >= this->size || j < bsize || j >= this->size) {
+				mat.at<uchar>(i + this->posY, j + this->posX) = WHITE;
+			}
 		}
 	}
 }

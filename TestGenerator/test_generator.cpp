@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "test_generator.h"
 #include "video_factory.h"
 #include "frame.h"
@@ -23,6 +25,7 @@ void TestGenerator::GenerateTest(int shapesNo, int frames){
 	VideoFactory vf(this->fileName, this->width, this->height, this->fps);
 
 	cv::Mat v(this->height, this->width, CV_8U);
+	cv::Mat b(this->height, this->width, CV_8U);
 
 	shapes.clear();
 	for(int i = 0; i < shapesNo; i++){
@@ -41,6 +44,7 @@ void TestGenerator::GenerateTest(int shapesNo, int frames){
 			}
 		}
 		this->Draw(v);
+		this->DrawBorder(b, 5);
 		this->Update();
 		vf.AddFrame(v);
 		this->saveFile(f);
@@ -51,6 +55,12 @@ void TestGenerator::GenerateTest(int shapesNo, int frames){
 void TestGenerator::Draw(cv::Mat &mat){
 	for(int i = 0; i < this->shapes.size(); i++){
 		this->shapes[i].Draw(mat);
+	}
+}
+
+void TestGenerator::DrawBorder(cv::Mat &mat, int size){
+	for (int i = 0; i < this->shapes.size(); i++){
+		this->shapes[i].DrawBorder(mat, size);
 	}
 }
 
