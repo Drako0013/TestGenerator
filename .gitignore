@@ -226,5 +226,3 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.filters
-TestGenerator/TestGenerator.vcxproj
-*.sln
