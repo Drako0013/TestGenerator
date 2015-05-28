@@ -8,7 +8,7 @@
 
 class Shape{
 public:
-	Shape( int type, int color, int posX, int posY, int velX, int velY, int size );
+	Shape( int type, int color, int posX, int posY, int velX, int velY, int size, int accelX, int accelY );
 	//~Shape();
 	void Draw(cv::Mat &mat);
 	void DrawBorder(cv::Mat &mat, int size);
@@ -23,6 +23,8 @@ private:
 	int posY;
 	int velX;
 	int velY;
+	int accelX;
+	int accelY;
 
 };
 
